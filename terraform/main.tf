@@ -86,16 +86,24 @@ module "security_group" {
 }
 
 ###############################################################
-# KEY PAIR (flexível: local ou repo)
+# KEY PAIR
 ###############################################################
 resource "aws_key_pair" "lab_key" {
   key_name = "lab-key"
 
-  # Se existir ~/.ssh/id_rsa.pub, usa ele. Se não, usa o lab-key.pub do repo
   public_key = try(
     file(pathexpand("~/.ssh/id_rsa.pub")),
     file("${path.module}/lab-key.pub")
   )
+}
+
+###############################################################
+# VARIÁVEL PARA GEMINI_API_KEY
+###############################################################
+variable "gemini_api_key" {
+  description = "API Key do Google Gemini"
+  type        = string
+  sensitive   = true
 }
 
 ###############################################################
@@ -112,32 +120,25 @@ module "ec2_instance" {
 
   user_data = <<-EOF
 #!/bin/bash
-exec > /var/log/user_data.log 2>&1
 set -xe
-
-# Atualiza pacotes
 apt-get update -y
 apt-get install -y docker.io git
 
-# Habilita docker
+# Docker
 systemctl start docker
 systemctl enable docker
 
-# Permite que o usuário ubuntu use docker sem sudo
-usermod -aG docker ubuntu
-
-# Vai para a home
+# Clonar app
 cd /home/ubuntu
-
-# Clona via HTTPS (sem SSH) apenas se não existir
-if [ ! -d "app" ]; then
-  git clone https://github.com/LuizSilva-1/IA-Generativa-DebugAI.git app
-fi
+git clone https://github.com/LuizSilva-1/IA-Generativa-DebugAI.git app || exit 1
 cd app
 
-# Builda e roda o container
+# Criar .env
+echo "GEMINI_API_KEY=${var.gemini_api_key}" > .env
+
+# Build + Run
 docker build -t debugai .
-docker run -d -p 8501:8501 --restart always --name debugai debugai
+docker run -d -p 8501:8501 --name debugai --env-file .env debugai
 EOF
 }
 
