@@ -1,7 +1,7 @@
 # Ignorar arquivos sensíveis e desnecessários para o Git
 **/id_rsa
 **/id_rsa.pub
-
+.env
 venv/
 __pycache__/
 *.pyc
