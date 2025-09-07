@@ -99,3 +99,7 @@ IA-Generativa-DebugAI/
 - O pipeline CI/CD pode ser expandido para deploy real
 - O Makefile pode ser adicionado para automatizar comandos locais
 - O projeto está pronto para ser apresentado e evoluído
+
+
+Apaga tudo do terraform pra usar em uma nova conta lab.
+rm -rf terraform/.terraform terraform/.terraform.lock.hcl terraform/terraform.tfstate terraform/terraform.tfstate.backup
