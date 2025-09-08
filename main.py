@@ -172,14 +172,16 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# 7. Interface principal – estilo console
+# 7. Introdução informativa
 st.markdown("""
-<pre style="background:#0d1117; color:#58a6ff; padding:15px; border-radius:10px; font-family:'Fira Code', monospace; font-size:14px;">
-👾 DebugAI v1.0
-------------------------------------
-Assistente de Diagnóstico DevOps
-Digite um erro ou log para iniciar análise
-</pre>
+<div style="background:#161b22; padding:15px; border-radius:10px; margin-bottom:20px; text-align:center;">
+    <h2 style="color:#58a6ff; font-family:'Fira Code', monospace;">👾 DebugAI</h2>
+    <p style="color:#8b949e; font-size:15px; font-family:'Fira Code', monospace;">
+        O <b>DebugAI</b> é um assistente de diagnóstico para erros e logs em ambientes <b>DevOps</b>.<br>
+        Ele utiliza <b>IA Generativa</b> (Gemini API) para analisar problemas técnicos e sugerir soluções práticas.<br><br>
+        Tecnologias principais: <b>Python</b>, <b>Docker</b>, <b>Kubernetes</b>, <b>Prometheus</b>, <b>AWS</b>.
+    </p>
+</div>
 """, unsafe_allow_html=True)
 
 # Histórico de mensagens
@@ -187,19 +189,17 @@ if 'messages' not in st.session_state:
     st.session_state.messages = []
     st.session_state.messages.append({
         "role": "assistant",
-        "content": """👋 Bem-vindo ao **DebugAI**!
-Sou seu assistente de diagnóstico DevOps.
+        "content": """💡 Olá! Para começar, digite abaixo o erro ou log que você deseja analisar.  
 
-Posso ajudar com erros de:
-- 🐍 Python  
-- 🐳 Docker  
-- ☸️ Kubernetes  
-- 📊 Prometheus  
-- ☁️ AWS CLI  
+Exemplos de entrada:  
+- ❌ `Error: Docker daemon not running`  
+- ❌ `kubectl get pods travando`  
+- ❌ `Timeout conectando no RDS`  
 
-Digite abaixo o erro ou log que você quer analisar.
+Eu irei analisar e sugerir soluções práticas. 👇
 """
     })
+
 
 # Exibir mensagens anteriores
 for message in st.session_state.messages:
@@ -213,7 +213,7 @@ if prompt := st.chat_input("💬 Digite o erro ou log aqui..."):
         st.markdown(prompt)
     
     with st.chat_message("assistant"):
-        with st.spinner("🤔 Analisando o erro..."):
+        with st.spinner("🤔 Analisando..."):
             response = generate_response(st.session_state.model, prompt)
             st.markdown(response)
     
