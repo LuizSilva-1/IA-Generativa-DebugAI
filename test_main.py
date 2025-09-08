@@ -11,5 +11,3 @@ def test_generate_response_mock():
     response = generate_response(MockModel(), "erro")
     assert response == "Resposta mock"
 
-def test_erro_simulado():
-    assert 1 == 2  # Este teste vai falhar
