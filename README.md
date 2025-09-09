@@ -116,17 +116,6 @@ Workflow principal (`.github/workflows/ci-cd.yml`):
 - `terraform plan` (simulação de deploy)
 - Pipeline auxiliar: `terraform destroy` antes de `apply` em labs
 
----
-
-## 💻 GitHub Codespaces
-- Ambiente remoto pronto para:
-  - Rodar Streamlit
-  - Buildar Docker
-  - Executar Terraform
-  - Rodar testes  
-
----
-
 ## 📂 Estrutura do Projeto
 ```
 IA-Generativa-DebugAI/
